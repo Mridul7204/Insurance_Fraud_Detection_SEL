@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Fraud Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-hover: #3a53d0;
+            --bg-color: #f4f7fe;
+            --card-bg: #ffffff;
+            --text-main: #2b3674;
+            --text-muted: #a3aed1;
+            --border-color: #e0e5f2;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            background-image: linear-gradient(135deg, #f4f7fe 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            color: var(--text-main);
+            margin: 0 0 10px 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 15px;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a3aed1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h2> Claim Verification </h2>
+            <p>Enter the incident details below to run the AI fraud analysis.</p>
+        </div>
+
+        <form action="/predict" method="POST">
+            
+            <div class="form-group">
+                <label for="months_as_customer"> Months as Customer </label>
+                <input type="number" class="form-control" id="months_as_customer" name="months_as_customer" placeholder="e.g. 24" required>
+            </div>
+
+            <div class="form-group">
+                <label for="policy_deductable"> Policy Deductible </label>
+                <input type="number" class="form-control" id="policy_deductable" name="policy_deductable" placeholder="e.g. 500" required>
+            </div>
+
+            <div class="form-group">
+                <label for="total_claim_amount"> Total Claim Amount </label>
+                <input type="number" class="form-control" id="total_claim_amount" name="total_claim_amount" placeholder="e.g. 15000" required>
+            </div>
+
+            <div class="form-group">
+                <label for="umbrella_limit"> Umbrella Limit </label>
+                <input type="number" class="form-control" id="umbrella_limit" name="umbrella_limit" placeholder="e.g. 0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="number_of_vehicles_involved"> Vehicles Involved </label>
+                <input type="number" class="form-control" id="number_of_vehicles_involved" name="number_of_vehicles_involved" placeholder="e.g. 1" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="incident_severity"> Incident Severity </label>
+                <select class="form-control" id="incident_severity" name="incident_severity" required>
+                    <option value="" disabled selected>Select severity...</option>
+                    <option value="Trivial Damage">Trivial Damage</option>
+                    <option value="Minor Damage">Minor Damage</option>
+                    <option value="Major Damage">Major Damage</option>
+                    <option value="Total Loss">Total Loss</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit">Analyze Claim</button>
+        </form>
+
+        {% if prediction_text %}
+            <div class="result-box" id="predictionResult">
+                {{ prediction_text }}
+            </div>
+            
+            <script>
+                const resultText = "{{ prediction_text }}";
+                const resultBox = document.getElementById('predictionResult');
+                if (resultText.includes("Genuine")) {
+                    resultBox.style.backgroundColor = "#e8f8f5";
+                    resultBox.style.borderColor = "#1abc9c";
+                    resultBox.style.color = "#16a085";
+                } else if (resultText.includes("Fraud")) {
+                    resultBox.style.backgroundColor = "#fdedec";
+                    resultBox.style.borderColor = "#e74c3c";
+                    resultBox.style.color = "#c0392b";
+                }
+            </script>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
